@@ -1,0 +1,58 @@
+---
+title: "EDA dos projetos"
+output: html_notebook
+---
+
+```{r setup}
+library(tidyverse)
+library(here)
+theme_set(theme_bw())
+```
+
+```{r read}
+projetos = read_csv(here("data/projetos.csv"))
+```
+
+```{r clean}
+
+```
+
+## Distribuições
+
+```{r}
+projetos %>% 
+    group_by(lang) %>% 
+    summarise(n = n()) %>% 
+    ggplot(aes(x = lang, y = n)) + 
+    geom_col()
+```
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = lang, y = team)) + 
+    geom_jitter(alpha = .4) + 
+    scale_y_log10()
+```
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = sloc)) + 
+    geom_histogram(bins = 20, fill = "white", color = "orange") + 
+    facet_grid(lang ~ .) + 
+    scale_x_log10()
+```
+
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = sloc, color = lang)) + 
+    stat_ecdf() + 
+    scale_x_log10()
+```
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = build_success)) + 
+    geom_density()
+```
+
