@@ -13,6 +13,6 @@ Exercício de análise de dados quantitativos baseado nos dados do TravisTorrent
 O código é em R. Rode: 
 
 ```
-deps = c("tidyverse")
+deps = c("tidyverse", "lubridate", "here")
 install.packages(deps)
 ```
