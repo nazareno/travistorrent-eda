@@ -1,6 +1,8 @@
 ---
 title: "EDA dos projetos"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup}
@@ -9,12 +11,18 @@ library(here)
 theme_set(theme_bw())
 ```
 
+## Lendo os dados
+
+Os dados já processados dos projetos
+
 ```{r read}
-projetos = read_csv(here("data/projetos.csv"))
+projetos = read_csv(here::here("data/projetos.csv"))
 ```
 
-```{r clean}
 
+```{r clean}
+projetos = projetos %>% 
+    filter(lang != "javascript")
 ```
 
 ## Distribuições
@@ -29,16 +37,16 @@ projetos %>%
 
 ```{r}
 projetos %>% 
-    ggplot(aes(x = lang, y = team)) + 
-    geom_jitter(alpha = .4) + 
+    ggplot(aes(x = "todos", y = team)) + 
+    geom_jitter(alpha = .4, width = .2, size = .8) + 
     scale_y_log10()
 ```
 
 ```{r}
 projetos %>% 
     ggplot(aes(x = sloc)) + 
-    geom_histogram(bins = 20, fill = "white", color = "orange") + 
-    facet_grid(lang ~ .) + 
+    geom_histogram(bins = 50, fill = "white", color = "blue") + 
+    facet_grid(lang ~ .) +
     scale_x_log10()
 ```
 
