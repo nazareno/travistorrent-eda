@@ -8,6 +8,7 @@ output:
 ```{r setup}
 library(tidyverse)
 library(here)
+library(knitr)
 theme_set(theme_bw())
 ```
 
@@ -25,7 +26,9 @@ projetos = projetos %>%
     filter(lang != "javascript")
 ```
 
-## Distribuições
+## Visualizando distribuições
+
+1 variável nominal
 
 ```{r}
 projetos %>% 
@@ -37,18 +40,125 @@ projetos %>%
 
 ```{r}
 projetos %>% 
-    ggplot(aes(x = "todos", y = team)) + 
-    geom_jitter(alpha = .4, width = .2, size = .8) + 
-    scale_y_log10()
+    ggplot(aes(x = "um label", y = team)) + 
+    geom_jitter(alpha = .4, width = .2, size = .8) 
 ```
 
 ```{r}
 projetos %>% 
-    ggplot(aes(x = sloc)) + 
-    geom_histogram(bins = 50, fill = "white", color = "blue") + 
+    ggplot(aes(x = "um label", 
+               y = build_success_prop)) + 
+    geom_jitter(alpha = .4, width = .2, size = .8) 
+```
+
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = team)) + 
+    geom_histogram(binwidth = 10, fill = "white", color = "blue") + 
+    geom_rug(alpha = .5)
+
+projetos %>% 
+    ggplot(aes(x = build_success_prop)) + 
+    geom_histogram(binwidth = .1, fill = "white", color = "red") + 
+    geom_rug(alpha = .3)
+```
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = team)) + 
+    stat_ecdf()
+```
+
+```{r}
+projetos %>% 
+    ggplot(aes(x= lang, 
+               y = build_success_prop)) + 
+    geom_boxplot(width = .25)
+
+projetos %>% 
+    ggplot(aes(x= build_success_prop)) + 
+    geom_histogram(bins = 10) + 
+    facet_grid(lang ~ .)
+
+projetos %>% 
+    ggplot(aes(x= build_success_prop, color = lang)) + 
+    stat_ecdf() 
+
+```
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = build_success_prop, color = lang)) + 
+    geom_density()
+```
+
+```{r}
+projetos %>% 
+    ggplot(aes(y = build_success_prop, 
+               x = lang)) + 
+    geom_violin() + 
+    geom_jitter(width = .1, alpha = .1)
+```
+
+
+1 nominal x 1 numérica
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = lang, y = team)) + 
+    geom_jitter(alpha = .4, width = .2, size = .8) 
+```
+
+Transformação de log na escala da variável team:
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = lang, y = team)) + 
+    geom_jitter(alpha = .4, width = .2, size = .8) + 
+    scale_y_log10()
+```
+
+O que é a transformação de log
+
+```{r}
+escalas = tibble(x = 10**(1:20), 
+                 escala_linear = x, 
+                 escala_log = log10(x))
+
+escalas
+```
+
+
+### Histogramas e density plots
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = sloc_end)) + 
+    geom_histogram(bins = 20, fill = "white", color = "blue") + 
     facet_grid(lang ~ .) +
     scale_x_log10()
 ```
+
+Density
+
+Rugs
+
+ECDFs
+
+Boxplots
+
+Violin
+
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = activity_period)) + 
+    geom_histogram(bins = 10, fill = "white", color = "blue") + 
+    geom_rug(alpha = .3) + 
+    facet_grid(lang ~ .) 
+```
+
 
 
 ```{r}
@@ -62,5 +172,14 @@ projetos %>%
 projetos %>% 
     ggplot(aes(x = build_success)) + 
     geom_density()
+```
+
+```{r}
+projetos %>% 
+    ggplot(aes(x = team, 
+               y = commits_per_month)) + 
+    geom_point(alpha = .3) + 
+    scale_x_log10() + 
+    scale_y_log10()
 ```
 
