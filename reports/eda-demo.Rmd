@@ -163,14 +163,14 @@ projetos %>%
 
 ```{r}
 projetos %>% 
-    ggplot(aes(x = sloc, color = lang)) + 
+    ggplot(aes(x = sloc_end, color = lang)) + 
     stat_ecdf() + 
     scale_x_log10()
 ```
 
 ```{r}
 projetos %>% 
-    ggplot(aes(x = build_success)) + 
+    ggplot(aes(x = build_success_prop)) + 
     geom_density()
 ```
 
